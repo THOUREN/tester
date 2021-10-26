@@ -16,6 +16,25 @@ List<Question> sample_data = [
     question: 'Flutter is an open-source UI software development kit created by ______', 
     options: ['Apple', 'Google', 'Facebook', 'Microsoft'],
   ),
+  Question(
+    answer: [0,0,0,1], 
+    id: 2, 
+    question: 'When google release Flutter.', 
+    options: ['Jun 2018', 'Jun 2017', 'May 2017', 'May 2018'],
+  ),
+  Question(
+    answer: [1,0,0,0], 
+    id: 3, 
+    question: 'What command do you use to output data to the screen?', 
+    options: ['Cin', 'Count>>', 'Cout', 'Output>>'],
+  ),
+  Question(
+    answer: [0,1,0,0], 
+    id: 4, 
+    question: 'A memory location that holds a single letter or number.', 
+    options: ['Double', 'Int', 'Char', 'Word'],
+  ),
+  
 
   
 ];
