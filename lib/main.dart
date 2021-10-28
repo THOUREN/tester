@@ -9,8 +9,6 @@ void main() {
 }
 
 class App extends StatefulWidget {
-  final int TaskNum = 1;
-  final int counter = 0;
   
   @override
   _AppState createState() => _AppState();
@@ -53,31 +51,33 @@ class _AppState extends State<App> {
       return ElevatedButton(
         onPressed: () {
           return setState(() {
-
-            if (state == 1 && !TaskState)
+            if (!TaskState)
             {
-              counter++;
+              questions[TaskNum-1].selected = number;
+
+              if (state == 1 && !TaskState)
+              {
+                counter++;
+              }
             }
-            TaskState = true;
             
           });
         },
-        child: Text(title,
+        child: Text( (questions[TaskNum-1].selected != number) ? title : title+" (ваш ответ)",
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 40)),
             style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all<Color>(TaskState ? changedColor : color),
             ),
       );
     }
-    
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('SOME'),
-      ),
-      body: Center(
-        child: Column(
+
+    Widget _task(int _TaskNum) {
+
+
+
+      return Column(
           children: <Widget>[
-            _Text(questions[TaskNum-1].question!),
+            _Text(questions[_TaskNum].question!),
             Padding(
                 padding: EdgeInsets.fromLTRB(0, 170, 0, 0), child: _button(0)),
             Padding(
@@ -88,16 +88,41 @@ class _AppState extends State<App> {
                 padding: EdgeInsets.fromLTRB(0, 20, 0, 0), child: _button(3)),
             
           ],
-        ),
+        );
+    }
+
+    
+    
+    return Scaffold(
+      appBar: AppBar(
+        title: Row( children : [Text('Тест'),
+                      if (TaskState)
+                        Padding( padding : EdgeInsets.fromLTRB(100, 0, 0, 0), child : ElevatedButton(
+                          onPressed: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => ResultScreen(counter : "$counter")));
+                          },
+                          child: Text('Окно результатов',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 20)),
+                          style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.blueGrey)),
+                        ),)
+                        ],
+                        ),
+        
+        
       ),
-      bottomNavigationBar : Row(
+      body: Center(
+        child: _task(TaskNum-1),
+      ),
+      
+      bottomSheet : Row(
                     children: [
                       ElevatedButton(
                         onPressed: () {
                           return setState(() {
                             if (TaskNum > 1)
                               TaskNum--;
-                            TaskState = false;
                           });
                         },
                         child: Text('Назад',
@@ -117,56 +142,41 @@ class _AppState extends State<App> {
                           return setState(() {
                             if (TaskNum+1 <= questions.length)
                               TaskNum++;
-                            TaskState = false;
+                            else
+                            {
+                              TaskState = true;
+                            }
                           });
                         },
-                        child: Text('Вперёд',
+                        child: Text(!TaskState ? ((TaskNum+1 <= questions.length)? 'Вперёд' : 'Закончить тест') : 'Вперёд',
                             style: TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 20)),
                       ),
+
+                      
                     ],
                   ),
     );
   }
 }
 
+class ResultScreen extends StatelessWidget {
 
-/*
-void main() {
-  runApp(Nav2App());
-}
+  String counter;
+  ResultScreen({this.counter=''});
+  
 
-class Nav2App extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: HomeScreen(),
-    );
-  }
-}
-
-class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
       body: Center(
-        child: FlatButton(
-          child: Text('View Details'),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) {
-                return DetailScreen();
-              }),
-            );
-          },
-        ),
+        child: Text("Ваш результат: "+ counter)
       ),
     );
   }
 }
-
+/*
 class DetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

@@ -5,6 +5,8 @@ class Question{
   final List<int>? answer;
   final String? question;
   final List<String>? options;
+  final bool taskState = false;
+  int selected = -1;
 
   Question({this.id, this.question, this.answer, this.options});
 }
